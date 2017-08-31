@@ -17,7 +17,18 @@ public class Collision {
      * @return true se há colisão ou false, do contrário.
      */
     public static final boolean circlesOverlap(Circle c1, Circle c2) {
-        return false;
+        boolean blnColisao = false;
+        //Calcula a soma dos raios
+        float fltSomaRaios = c1.radius + c2.radius;
+        //Eleva ao quadrado a soma dos raios para nao usar radiciacao
+        fltSomaRaios *= fltSomaRaios;
+        //Calcula a distancia entre o centro dos circulos
+        float fltDistanciaCentros = (c2.x - c1.x)*(c2.x - c1.x) + (c2.y - c1.y)*(c2.y - c1.y);
+        //Verifica se colidiu
+        if(fltDistanciaCentros <= fltSomaRaios)
+            blnColisao = true;
+        //Retorna o resultado
+        return blnColisao;
     }
 
     /**
@@ -29,6 +40,16 @@ public class Collision {
      * @return true se há colisão ou false, do contrário.
      */
     public static final boolean rectsOverlap(Rectangle r1, Rectangle r2) {
-        return false;
+        //Variavel de colisao
+        boolean blnColisao = false;
+        //Verifica a coordenada x
+        if(r2.x <= r1.x + r1.width || r1.x >= r2.x + r2.width){
+            //Verifica a coordenada y
+            if(r2.y <= r1.y + r1.height || r1.y >= r2.y + r2.height){
+                blnColisao = true;
+            }
+        }
+        //Retorna o resultado
+        return blnColisao;
     }
 }
