@@ -61,4 +61,37 @@ public class Collision {
         //Retorna o resultado
         return blnColisao;
     }
+    
+    
+    public static final boolean rectAndCircleOverlap(Rectangle r, Circle c) {
+        //Utiliza a classe Vector2 para coordenadas
+        Vector2 vRec = new Vector2(r.x, r.y);
+        Vector2 vCir = new Vector2(c.x, c.y);
+        //Variavel de colisao
+        boolean blnColisao = false;
+        //Variavel de distancia
+        float fltDistancia;
+        //Vetor de distancia entre os centros
+        Vector2 vDis = new Vector2(vCir.x-vRec.x, vCir.y-vRec.y);
+        //Monta as projecoes
+        Vector2 vProjecaoX = new Vector2(vDis.x,0);
+        Vector2 vProjecaoY = new Vector2(0,vDis.y);
+        if(vProjecaoX.len() > r.width/2){
+            vProjecaoX.nor();
+            vProjecaoX.x = vProjecaoX.x*(r.width/2);
+        }
+        if(vProjecaoY.len() > r.height/2){
+            vProjecaoY.nor();
+            vProjecaoY.y = vProjecaoY.y*(r.height/2);
+        }
+        //Vetor resultante
+        vProjecaoX.add(vProjecaoY);
+        //Calculo
+        fltDistancia = vCir.dst2(vProjecaoX);
+        if(fltDistancia <= c.radius*c.radius)
+            blnColisao = true;
+        
+        //Retorna o resultado
+        return blnColisao;
+    }
 }

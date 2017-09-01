@@ -21,12 +21,15 @@ public class LaserShot implements Shot {
     private final Vector2 position;
     private final float speed;
     private final Rectangle bounds;
+    private static final float RADIUS = 2;
+    private final Circle circle;
 
     LaserShot(Vector2 position) {
         this.position = new Vector2(position);
         bounds = new Rectangle(
                 position.x - WIDTH / 2f, position.y - HEIGHT / 2f,
                 WIDTH, HEIGHT);
+        circle = new Circle(position.x - RADIUS, position.y - RADIUS, RADIUS);
         speed = 100;
     }
 
@@ -34,6 +37,7 @@ public class LaserShot implements Shot {
     public void update(float dt) {
         position.y += speed * dt;
         bounds.y = position.y - HEIGHT / 2F;
+        circle.y = position.y - RADIUS;
     }
 
     @Override
@@ -59,9 +63,11 @@ public class LaserShot implements Shot {
         // Laser vs Asteroid: rect vs rect
         // Laser vs Vortex: rect vs rect
         // Laser vs Ship: nada
-        if (other instanceof Asteroid || other instanceof VortexShot) {
+        if (other instanceof Asteroid) 
             return Collision.rectsOverlap(bounds, other.getMinimumBoundingRectangle());
-        } else {
+        else if(other instanceof VortexShot)
+            return Collision.rectAndCircleOverlap(bounds, other.getMinimumEnclosingBall());
+        else {
             return false;
         }
     }
